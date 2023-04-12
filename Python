@@ -1,0 +1,131 @@
+import random
+import string
+from words import words
+print("WELCOME TO  H~A~N~G~M~A~N! **")
+print()
+
+list = ["Class", "Doors", "Window", "Prosperity", "Listen", "Letter", "Cheeseburger","Awesome", "Peace"]
+
+Cheer = ["""      
+                 O   
+                \|/   
+                 |     YAY! YOU WON!
+                / \\
+        """
+      ]
+
+Stage = ["""
+         '`````````
+         '        '     
+         '        O   
+         '       \|/      GAME OVER! 
+         |        |   
+         |       / \\
+         |
+      -------
+        """,
+        """
+                 '`````````
+                 '        '     
+                 '        O   
+                 '       \|/   
+                 |        |        FIFTH WRONG GUESS, YOU GOT ONLY ONE CHANCE LEFT!
+                 |       / 
+                 |
+              -------
+                """
+        ,
+        """
+                 '`````````
+                 '        '     
+                 '        O   
+                 '       \|/   
+                 |        |         FOURTH WRONG GUESS!
+                 |       
+                 |
+              -------
+                """,
+"""
+                 '`````````
+                 '        '     
+                 '        O   
+                 '       \|/   
+                 |                 THIRD WRONG GUESS!
+                 |       
+                 |
+              -------
+                """,
+"""
+                 '`````````
+                 '        '     
+                 '        O   
+                 '        
+                 |             SECOND WRONG GUESS!  
+                 |       
+                 |
+              -------
+                """,
+"""
+                 '`````````
+                 '        '     
+                 '         
+                 '       
+                 |              FIRST WRONG GUESS!
+                 |       
+                 |
+              -------
+                """
+        ]
+
+def hangman():
+
+    word = random.choice(list).upper()
+    #print(word)
+    word_letter = set(word)
+
+    used_letter = set()       # all the guessed words
+
+
+    alphabet = set(string.ascii_uppercase)
+    count = 6
+    while count > 0:
+
+
+        guess_letter = [i if i in used_letter else "_" for i in word]
+
+        store = [i for i in word if i in used_letter]
+
+        print("You have ", count, "live(s) left.")
+        print("You have used these letter(s): ", " ".join(used_letter))
+        print("Your word: ", " ".join(guess_letter))
+        print()
+        if len(store) == len(guess_letter):
+            print("You smart!, you found the word, the word is", word +"!")
+            print(Cheer[0])
+            break
+
+        user_input = input("Guess a letter:").upper()
+
+        if user_input in alphabet - used_letter:
+            print(used_letter)
+            used_letter.add(user_input)
+            if user_input in word_letter:
+                word_letter.remove(user_input)
+            else:
+                count-= 1
+                print(Stage[count])
+        elif user_input in used_letter:
+            print()
+            print("You have used ****", user_input, "****before: ")
+            print()
+    if count == 0:
+        print("YOU LOST! THE WORD IS ~", word +'!')
+        print()
+    replay = input("PLAY AGAIN? (y/n):").upper()
+
+    if replay == "y".upper():
+        print()
+        hangman()
+    else:
+        print("Goodbye!, never give up, Try again later!")
+hangman()
